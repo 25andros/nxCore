@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 
 import { FormBuilder, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Observable, Subject, concat, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'gibbsltd-forms',
@@ -10,8 +11,10 @@ import { Observable } from 'rxjs';
 })
 export class FormsComponent {
 
+  unsubscribe$ = new Subject<void>();
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+             private _snack:MatSnackBar) {
   }
 
 
@@ -19,7 +22,7 @@ export class FormsComponent {
   //Form Builder
   itemValues = this.fb.group({
     nameProd: ['Drill',[Validators.required,Validators.minLength(5)]],
-    priceProd: ['',]
+    priceProd: ['75',]
   } );
 
   name(){return this.itemValues.value.nameProd;}
@@ -36,31 +39,24 @@ export class FormsComponent {
     return (this.name.length<4 ||this.name.length>25 )? true : false;
   }
 
-  grabINT(){
 
-/*
+  pass$=this.itemValues.statusChanges
+  .pipe(takeUntil(this.unsubscribe$))
+  .subscribe((x)=>{
+  if(x=="INVALID"){
 
-  const request$ = new Observable(observer => {
-    fetch(https://backside-1ad41-default-rtdb.firebaseio.com/)
-    .then(response => {
-      return response.ok ? response.text() : '';
-    })
-    .then(result => {
-      if (result) {
-        observer.next(result);
-        observer.complete();
-      } else {
-        observer.error('An error has occured');
-      }
-    });
+  this._snack.open("needs to be valid!","close",{duration: 3000})
+}
   });
 
-  */
+
+
+  ngOnDestroy():void{
+
+    console.log(`Close of the this page.`);
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+
   }
-
-
-
-
-
 
 }

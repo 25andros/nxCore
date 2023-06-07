@@ -8,6 +8,7 @@ import { Observable, Subject, filter, from, interval, map, of, takeUntil, takeWh
 })
 export class RxjsComponent {
 
+  unsubscribe$ = new Subject<void>();
 
   //method #1 for instaniation of observable, VIA constructor
   myFirstObservable = new Observable((injector)=>{
@@ -166,7 +167,7 @@ export class RxjsComponent {
         },
         ()=>{
           console.log("done!");
-          alert(`Observable has been finish`);
+          //alert(`Observable has been finish`);
         }
       );
 
@@ -227,4 +228,12 @@ export class RxjsComponent {
         else{console.log("out2");}
       }
 
+      //lifecycle hooks
+
+      ngOnDestroy(){
+        this.unsubscribe$.next();
+        this.unsubscribe$.complete();
+
+
+      }
 }
