@@ -1,0 +1,25 @@
+<p>rxjs works!</p>
+
+
+<mat-card style="max-width:200px; margin-top: 20px">
+  <mat-card-header >
+    <mat-card-title>Ahvals</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+
+
+    <button style="max-width: 50px; margin: 5px;"  mat-flat-button color="primary" (click)="subscribe()">Go In</button>
+
+    <button style="max-width: 50px; margin: 5px;"  mat-flat-button color="primary" (click)="unsubscribe()">Go Out</button>
+
+  <!-- <p> {{data$ |async}}</p> -->
+  <p> {{quattro$ |async}}</p>
+
+
+
+  <!-- <mat-slide-toggle #stvalu (change)="changeSub()"> Subscribe</mat-slide-toggle> -->
+
+  <mat-slide-toggle #stvalu [(ngModel)]="isSubscribed" (change)="subIn()"> Subscribe</mat-slide-toggle>
+
+  </mat-card-content>
+</mat-card>

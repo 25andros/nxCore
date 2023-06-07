@@ -1,0 +1,15 @@
+<mat-card style="width: 200px;">
+
+<mat-card-header>
+    <mat-card-title>Part A comp</mat-card-title>
+</mat-card-header>
+
+<form [formGroup]="inputsValues">
+
+  <mat-form-field style="max-width: 100px;" >
+    <input matInput formControlName="alphaIn">
+  </mat-form-field>
+</form>
+
+    <button style="max-width: 50px; margin: 5px;"  mat-flat-button color="primary" (click)="doTheMove()">action</button>
+</mat-card>
