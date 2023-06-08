@@ -9,6 +9,7 @@ import { appRoutes } from './app.routes';
 import { NxWelcomeComponent } from './nx-welcome.component';
 import { SvgsModule } from './svgs/svgs.module';
 import { DesignsModule } from './designs/designs.module';
+import { UIModule } from './ui/ui.module';
 
 @NgModule({
   declarations: [AppComponent, NxWelcomeComponent ],
@@ -23,6 +24,7 @@ import { DesignsModule } from './designs/designs.module';
     DesignsModule,
     BrowserAnimationsModule,
     MaterialModule,
+    UIModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

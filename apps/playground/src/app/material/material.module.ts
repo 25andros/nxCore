@@ -6,20 +6,32 @@ import {MatCardModule} from '@angular/material/card';
 //forms
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import { ReactiveFormsModule,FormsModule } from '@angular/forms';
+import {ReactiveFormsModule,FormsModule} from '@angular/forms';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatIconModule} from '@angular/material/icon';
+import {MatSliderModule} from '@angular/material/slider';
 
 const MaterialComponents = [
-MatButtonModule,
-MatCardModule,
-MatInputModule,
-MatFormFieldModule,
-ReactiveFormsModule,
+  MatInputModule,
+  FormsModule,
+  MatFormFieldModule,
+  ReactiveFormsModule,
 
-MatSlideToggleModule,
-FormsModule,
-MatSnackBarModule
+  MatButtonModule,
+  MatCardModule,
+
+  MatSlideToggleModule,
+  MatSnackBarModule,
+  MatRadioModule,
+  MatCheckboxModule,
+  MatToolbarModule ,
+  MatIconModule,
+  MatSliderModule,
+
 ]
 
 
