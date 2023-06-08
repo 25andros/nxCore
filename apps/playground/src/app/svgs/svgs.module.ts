@@ -4,6 +4,9 @@ import { SvgsComponent } from './svgs.component';
 import { BarComponent } from './bar/bar.component';
 import { PieComponent } from './pie/pie.component';
 import { ScatterComponent } from './scatter/scatter.component';
+import { MaterialModule } from '../material/material.module';
+import { Bar2Component } from './bar2/bar2.component';
+import { OpenComponent } from './open/open.component';
 
 
 @NgModule({
@@ -12,10 +15,13 @@ import { ScatterComponent } from './scatter/scatter.component';
     BarComponent,
     PieComponent,
     ScatterComponent,
+    Bar2Component,
+    OpenComponent,
 
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MaterialModule,
   ],
   exports: [SvgsComponent,
   ],

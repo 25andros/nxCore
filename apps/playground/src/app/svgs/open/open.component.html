@@ -1,0 +1,36 @@
+
+<h3 style="    text-align: center;">Wheel Tension App</h3>
+
+<mat-card style="max-width:50%">
+
+<form [formGroup]="sliderSelection ">
+  <mat-slider
+    [max]="slideMax"
+    [min]="slideMin"
+    [step]="step"
+    >
+    <input matSliderThumb formControlName=radius >
+  </mat-slider>
+<br>
+
+    <mat-slider [min]="slideMin" [max]="slideMax">
+      <input matSliderThumb formControlName=rightWheel >
+    </mat-slider>
+<br>
+
+      <mat-slider [min]="slideMin" [max]="slideMax">
+        <input matSliderThumb formControlName=leftWheel >
+      </mat-slider>
+</form>
+
+</mat-card>
+<span></span>
+
+
+<!-- <p>{{circleRadius}}</p> -->
+
+      <!-- <p>{{radius()}}</p> -->
+
+<figure id="pad"></figure>
+
+<p></p>

@@ -1,4 +1,22 @@
-<h3>D3 learning area</h3>
-<gibbsltd-bar></gibbsltd-bar>
-<gibbsltd-pie></gibbsltd-pie>
-<gibbsltd-scatter></gibbsltd-scatter>
+
+<img style="width:2rem; margin-right:1rem; vertical-align:top;"  src="../assets/D3_logo.svg" alt="D3 logo">
+<h3 style=display:inline; >Playground</h3>
+
+
+
+<section [formGroup]="selectGraph">
+  <mat-checkbox formControlName="bar">bar</mat-checkbox>
+  <mat-checkbox formControlName="pie">pie</mat-checkbox>
+  <mat-checkbox formControlName="scatter">scatter</mat-checkbox>
+  <mat-checkbox formControlName="bar2">bar2</mat-checkbox>
+</section>
+
+<gibbsltd-open></gibbsltd-open>
+
+<gibbsltd-bar *ngIf="selectedBar()==true"></gibbsltd-bar>
+<gibbsltd-pie  *ngIf="selectedPie()==true"></gibbsltd-pie>
+<gibbsltd-scatter  *ngIf="selectedScat()==true"></gibbsltd-scatter>
+<gibbsltd-bar2 *ngIf="selectedBar2()==true" chartName="bar2" [data]="chartData_2D_1"></gibbsltd-bar2>
+
+
+
