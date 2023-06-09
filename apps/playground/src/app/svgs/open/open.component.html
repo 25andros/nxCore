@@ -1,36 +1,85 @@
 
 <h3 style="    text-align: center;">Wheel Tension App</h3>
 
-<mat-card style="max-width:50%">
+<figure id="pad"></figure>
 
-<form [formGroup]="sliderSelection ">
-  <mat-slider
-    [max]="slideMax"
-    [min]="slideMin"
-    [step]="step"
-    >
-    <input matSliderThumb formControlName=radius >
-  </mat-slider>
-<br>
+<mat-tab-group>
+  <mat-tab label="Measure">
 
-    <mat-slider [min]="slideMin" [max]="slideMax">
-      <input matSliderThumb formControlName=rightWheel >
-    </mat-slider>
-<br>
+    <mat-card style="max-width:50%">
+      <form [formGroup]="sliderSelection ">
+        <mat-slider          [max]="slideMax"          [min]="slideMin"
+          [step]="step"
+          >
+          <input matSliderThumb formControlName=radius >
+        </mat-slider>
+          <br>
 
-      <mat-slider [min]="slideMin" [max]="slideMax">
-        <input matSliderThumb formControlName=leftWheel >
-      </mat-slider>
-</form>
+          <mat-slider [min]="slideMin" [max]="slideMax">
+            <input matSliderThumb formControlName=rightWheel >
+          </mat-slider>
+            <br>
 
+            <mat-slider [min]="slideMin" [max]="slideMax">
+              <input matSliderThumb formControlName=leftWheel >
+            </mat-slider>
+      </form>
 </mat-card>
+
 <span></span>
+
+  </mat-tab>
+  <mat-tab label="Config">
+
+    <form [formGroup]="sliderSelection">
+
+      <mat-form-field >
+        <mat-label>Spoke Count (per side)</mat-label>
+        <input matInput type=number formControlName=spokeQt>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Spoke Material</mat-label>
+        <select matNativeControl formControlName="spokeMat" >
+          <option value=1>Steel</option>
+          <option value=2>Aluminium</option>
+          <option value=3>Titanium</option>
+          <option value=4>Carbon Fiber</option>
+        </select>
+      </mat-form-field>
+
+      <mat-form-field >
+        <mat-label>Spoke Diameter (mm)</mat-label>
+        <input matInput type=number formControlName=spokeDia step=.1 min=.8 max=2.7>
+      </mat-form-field>
+
+
+    </form>
+
+
+  </mat-tab>
+
+  <mat-tab label="Legend"> Content 3 </mat-tab>
+</mat-tab-group>
+
+<mat-accordion>
+  <mat-expansion-panel >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Self aware panel
+      </mat-panel-title>
+      <mat-panel-description>
+        Currently I am {{panelOpenState ? 'open' : 'closed'}}
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <p>I'm visible because I am open</p>
+  </mat-expansion-panel>
+</mat-accordion>
 
 
 <!-- <p>{{circleRadius}}</p> -->
 
       <!-- <p>{{radius()}}</p> -->
 
-<figure id="pad"></figure>
 
 <p></p>
