@@ -9,7 +9,7 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './open.component.html',
   styleUrls: ['./open.component.css']
 })
-export class OpenComponent implements OnInit, OnDestroy{
+export class OpenComponent implements OnInit,OnChanges, OnDestroy{
 
   unsubscribe$ = new Subject<void>();
   panelOpenState = false;
@@ -22,7 +22,7 @@ export class OpenComponent implements OnInit, OnDestroy{
     radius:180,
     rightWheel: 155,
     leftWheel: 105,
-    spokeQt: 10,
+    spokeQt: 3,
     spokeMat: 1, //may change to string
     spokeDia: 2,
 
@@ -31,7 +31,7 @@ export class OpenComponent implements OnInit, OnDestroy{
   radius(){ return this.sliderSelection.value.radius}
   rWheel(){ return this.sliderSelection.value.rightWheel}
   lWheel(){ return this.sliderSelection.value.leftWheel}
-  spokeCount(){ return this.sliderSelection.value.spokeQt||3}
+  spokeCount(){return this.sliderSelection.value.spokeQt||3}
 
 
 
@@ -43,16 +43,21 @@ baseline$=this.sliderSelection.statusChanges
     d3.selectAll('circle#rxjsCirc').remove();
     this.createCirRight()
     this.createCirLeft()
+    d3.selectAll('line').remove();
+    this.linesMake()
+  });
 
-    //to allow for redraw of the max circle... will need to edit the .attr(r,radius())
-    d3.selectAll('circle#maxCirc').remove();
-    this.createCirBaselines();
-
+  linesDraw$=this.sliderSelection.statusChanges
+  .pipe(takeUntil(this.unsubscribe$))
+  .subscribe((x)=>{
+    //iterData;
     d3.selectAll('spokeLines').remove();
+
     this.initRay();
     this.linesMake();
-
+    //console.log("spokelines draw");
   });
+
 
 
   //lifecycle hooks
@@ -66,7 +71,7 @@ baseline$=this.sliderSelection.statusChanges
     this.initRay();
     this.linesMake();
 
-    //this.polygonRight()
+    //console.log("ngInit");
   }
 
   ngOnDestroy(){
@@ -127,10 +132,9 @@ baseline$=this.sliderSelection.statusChanges
     .style("stroke", "black")
     .attr('stroke-width',1)
     ;
-
   }
 
-  createCirRight():void{
+createCirRight():void{
     this.svg
     .append('circle')
     .attr('cx', this.centreX)
@@ -141,53 +145,53 @@ baseline$=this.sliderSelection.statusChanges
     .attr('stroke-width',3)
     .attr('id','rxjsCirc')
     ;
-  }
+}
 
-  createCirLeft():void{
-    this.svg
-    .append('circle')
-    .attr('cx', this.centreX)
-    .attr('cy', this.centreY)
-    .attr('r',this.lWheel())
-    .style("stroke", "orange")
-    .attr('stroke-width',3)
-    .attr('fill','none')
-    .attr('id','rxjsCirc')
-    ;
-  }
+createCirLeft():void{
+  this.svg
+  .append('circle')
+  .attr('cx', this.centreX)
+  .attr('cy', this.centreY)
+  .attr('r',this.lWheel())
+  .style("stroke", "orange")
+  .attr('stroke-width',3)
+  .attr('fill','none')
+  .attr('id','rxjsCirc')
+  ;
+}
 
-  iterDataR=Array({});
+iterDataR=Array({});
 
-  gety(degree:number,length:number):number{
-    //rads = degree*Math.PI/180;
-    return  Math.sin(degree*Math.PI/180)*length;
-  }
+gety(degree:number,length:number):number{
+  //rads = degree*Math.PI/180;
+  return  Math.sin(degree*Math.PI/180)*length;
+}
 
-  getx(degree:number,length:number){
-    return  Math.cos(degree*Math.PI/180)*length;
-  }
-
-  initRay(){
-    //this.iterDataR=Array(this.spokeCount()).fill({})
-
-    this.iterDataR= Array(this.spokeCount()).fill({}).map((x,i)=>
-x={
-  x1:this.alfa,
-  y1:this.bet,
-  x2:this.getx(360/this.spokeCount()*i,this.rWheelDraw)+this.alfa,
-  y2:this.gety(360/this.spokeCount()*i,this.rWheelDraw)+this.bet}
- );
- //console.log("initRay");
- //console.log(this.iterDataR);
+getx(degree:number,length:number){
+  return  Math.cos(degree*Math.PI/180)*length;
 }
 
 
-  linesMake(){
+initRay(){
+ //this.iterDataR=Array(this.spokeCount()).fill({})
 
-    this.svg
-    .selectAll('line')
-    .data(this.iterDataR)
-    .join('line')
+this.iterDataR= Array(this.spokeCount()).fill({}).map((x,i)=>
+  x={x1:this.alfa,
+     y1:this.bet,
+     x2:this.getx(360/this.spokeCount()*i,this.rWheelDraw)+this.alfa,
+     y2:this.gety(360/this.spokeCount()*i,this.rWheelDraw)+this.bet}
+);
+  //console.log("initRay");
+  //console.log(this.iterDataR);
+}
+
+
+linesMake(){
+
+  this.svg
+  .selectAll('line')
+  .data(this.iterDataR)
+  .join('line')
     .attr('x1',function(d:any) {return d.x1})
     .attr('x2',function(d:any) {return d.x2})
     .attr('y1',function(d:any) {return d.y1})
@@ -199,20 +203,38 @@ x={
 
   }
 
-  polygonRight(){
 
-    //Right wheel
-    this.svg
-    .append("polygon")
-    .attr("points", "75,75 100,10 125,75 100,125")
-    .style("fill", "none")
-    .style("stroke", "black")
-    .style("strokeWidth", 10)
-    ;
+
+
+  makeSpokes(spokesIn:number){
+   const rayGun=  Array(spokesIn).fill({});
+   console.log(rayGun);
   }
 
 
 
+  maketheLines(){
+    this.iterDataR;
+    this.linesMake();
+    console.log("yo");
+  }
+
+
+  ngOnChanges(){
+    this.makeSpokes(this.spokeCount());
+    console.log(`hello`);
+
+  }
+
+
+
+  endNote(){
+
+    d3
+    .select('p')
+    .append('p')
+    .text(`end`);
+  }
 
 }
 

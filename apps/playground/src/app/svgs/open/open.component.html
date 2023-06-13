@@ -3,40 +3,27 @@
 
 <figure id="pad"></figure>
 
+<!-- <div>
+
+<p>{{spokeCount()}}</p>
+<p>{{iterDataR}}</p>
+<p>{{radius()}}</p>
+
+<button mat-flat-button color="accent" (click)="initRay()">lines</button>
+
+</div> -->
+
 <mat-tab-group>
-  <mat-tab label="Measure">
 
-    <mat-card style="max-width:50%">
-      <form [formGroup]="sliderSelection ">
-        <mat-slider          [max]="slideMax"          [min]="slideMin"
-          [step]="step"
-          >
-          <input matSliderThumb formControlName=radius >
-        </mat-slider>
-          <br>
-
-          <mat-slider [min]="slideMin" [max]="slideMax">
-            <input matSliderThumb formControlName=rightWheel >
-          </mat-slider>
-            <br>
-
-            <mat-slider [min]="slideMin" [max]="slideMax">
-              <input matSliderThumb formControlName=leftWheel >
-            </mat-slider>
-      </form>
-</mat-card>
-
-<span></span>
-
-  </mat-tab>
   <mat-tab label="Config">
-
     <form [formGroup]="sliderSelection">
+      <br>
 
       <mat-form-field >
         <mat-label>Spoke Count (per side)</mat-label>
-        <input matInput type=number formControlName=spokeQt>
+        <input matInput type=number formControlName="spokeQt" min=3 max=20>
       </mat-form-field>
+      <br>
 
       <mat-form-field>
         <mat-label>Spoke Material</mat-label>
@@ -47,22 +34,38 @@
           <option value=4>Carbon Fiber</option>
         </select>
       </mat-form-field>
+      <br>
 
       <mat-form-field >
         <mat-label>Spoke Diameter (mm)</mat-label>
         <input matInput type=number formControlName=spokeDia step=.1 min=.8 max=2.7>
       </mat-form-field>
-
-
     </form>
-
-
   </mat-tab>
 
+
+  <mat-tab label="Measure">
+    <form [formGroup]="sliderSelection">
+      <mat-slider [max]="slideMax" [min]="slideMin" [step]="step" >
+        <input matSliderThumb formControlName=radius >
+      </mat-slider>
+        <br>
+
+        <mat-slider [min]="slideMin" [max]="slideMax">
+          <input matSliderThumb formControlName=rightWheel >
+        </mat-slider>
+          <br>
+
+          <mat-slider [min]="slideMin" [max]="slideMax">
+            <input matSliderThumb formControlName=leftWheel >
+          </mat-slider>
+    </form>
+  </mat-tab>
   <mat-tab label="Legend"> Content 3 </mat-tab>
+
 </mat-tab-group>
 
-<mat-accordion>
+<!-- <mat-accordion>
   <mat-expansion-panel >
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -74,10 +77,9 @@
     </mat-expansion-panel-header>
     <p>I'm visible because I am open</p>
   </mat-expansion-panel>
-</mat-accordion>
+</mat-accordion> -->
 
 
-<!-- <p>{{circleRadius}}</p> -->
 
       <!-- <p>{{radius()}}</p> -->
 
