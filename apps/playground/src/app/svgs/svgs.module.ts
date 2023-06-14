@@ -7,6 +7,7 @@ import { ScatterComponent } from './scatter/scatter.component';
 import { MaterialModule } from '../material/material.module';
 import { Bar2Component } from './bar2/bar2.component';
 import { OpenComponent } from './open/open.component';
+import { MezptComponent } from './open/mezpt/mezpt.component';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { OpenComponent } from './open/open.component';
     ScatterComponent,
     Bar2Component,
     OpenComponent,
+    MezptComponent,
 
   ],
   imports: [

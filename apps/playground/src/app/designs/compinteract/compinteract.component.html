@@ -1,0 +1,56 @@
+<!-- <p>The following is a good example of reactive binding</p> -->
+<button mat-flat-button color="primary" (click)="initObjz()">make Object</button>
+<button mat-flat-button color="primary" (click)="showObj()">show Object</button>
+
+<form [formGroup]="groupInput">
+  <br>
+
+  <mat-form-field >
+    <mat-label># of spokes</mat-label>
+    <input matInput type=number min=3 max=20 formControlName="quantity">
+  </mat-form-field>
+  <br>
+
+  <mat-form-field >
+    <mat-label>Target tension</mat-label>
+    <input matInput type=number min=3 max=20 formControlName="targetTension">
+  </mat-form-field>
+  <br>
+</form>
+
+
+<h2>Spoke Tensions</h2>
+<form style="display:inline-block; max-width:175px">
+  <h3 style="color:orange">Left</h3>
+
+  <div  *ngFor="let x of objLeft;index as i" >
+    <mat-form-field  style="max-width:100px">
+      <mat-label>Reading: {{i+1}}</mat-label>
+      <input matInput type=number [value]=getTarget()>
+    </mat-form-field>
+      <br>
+  </div>
+</form>
+
+<form style="display:inline-block; max-width:175px">
+<h3  style="color:blue">Right</h3>
+  <div  *ngFor="let x of objRight;index as i" >
+    <mat-form-field  style="max-width:100px">
+      <mat-label>Reading: {{i+1}}</mat-label>
+      <input matInput type=number [value]=getTarget()>
+    </mat-form-field>
+      <br>
+  </div>
+</form>
+
+
+
+<!-- <div>
+
+<h4>outputs</h4>
+<p>{{getQuantity()}}</p>
+<p>welcome "{{getUserName()}}"</p>
+
+</div> -->
+
+

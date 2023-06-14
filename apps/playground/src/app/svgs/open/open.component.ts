@@ -16,6 +16,7 @@ export class OpenComponent implements OnInit, OnDestroy{
 
   constructor(private fb: FormBuilder,   )  {  }
 
+  testTab=3;
 
   //Form Builder
   sliderSelection = this.fb.group({
@@ -26,12 +27,16 @@ export class OpenComponent implements OnInit, OnDestroy{
     spokeMat: 1, //may change to string
     spokeDia: 2,
 
+    polyL: 155,
+    polyR: 175,
   } );
 
   radius(){ return this.sliderSelection.value.radius}
   rWheel(){ return this.sliderSelection.value.rightWheel}
   lWheel(){ return this.sliderSelection.value.leftWheel}
   spokeCount(){ return this.sliderSelection.value.spokeQt||3}
+  polyL(){ return this.sliderSelection.value.polyL||100}
+  polyR(){ return this.sliderSelection.value.polyR||100}
 
 
 
@@ -52,6 +57,8 @@ baseline$=this.sliderSelection.statusChanges
     this.initRay();
     this.linesMake();
 
+    d3.selectAll('polygon').remove();
+    this.makepolyGon();
   });
 
 
@@ -65,8 +72,8 @@ baseline$=this.sliderSelection.statusChanges
     this.createCirLeft();
     this.initRay();
     this.linesMake();
+    this.makepolyGon();
 
-    //this.polygonRight()
   }
 
   ngOnDestroy(){
@@ -167,18 +174,15 @@ baseline$=this.sliderSelection.statusChanges
     return  Math.cos(degree*Math.PI/180)*length;
   }
 
+  //initialises iterDataR with the x,y co-ords for the spokes
   initRay(){
-    //this.iterDataR=Array(this.spokeCount()).fill({})
-
     this.iterDataR= Array(this.spokeCount()).fill({}).map((x,i)=>
 x={
   x1:this.alfa,
   y1:this.bet,
-  x2:this.getx(360/this.spokeCount()*i,this.rWheelDraw)+this.alfa,
-  y2:this.gety(360/this.spokeCount()*i,this.rWheelDraw)+this.bet}
+  x2:this.getx(360/this.spokeCount()*i,this.slideMax)+this.alfa,
+  y2:this.gety(360/this.spokeCount()*i,this.slideMax)+this.bet}
  );
- //console.log("initRay");
- //console.log(this.iterDataR);
 }
 
 
@@ -199,20 +203,58 @@ x={
 
   }
 
-  polygonRight(){
+  polyLeft:{ x:number; y:number}[]= [
+  ];
 
-    //Right wheel
+  polyRight:{ x:number; y:number}[]= [
+  ];
+
+    obj2polyPass(alpha:{ x:number; y:number}[]){
+
+      const xCor=alpha.map(x=>x.x);
+      const  yCor=alpha.map(x=>x.y);
+      return Array(alpha.length).fill({}).map((x,i)=>x=xCor[i]+","+yCor[i]).join(" ");
+    }
+
+
+  makepolyGon(){
+
+      //console.log(this.polyLeft);
+
+      //initialise of points for left polygon
+    this.polyLeft=Array(this.spokeCount()).fill({}).map((x,i)=>
+        x={
+          x:this.getx(360/this.spokeCount()*i,this.polyL())+this.centreX,
+          y:this.gety(360/this.spokeCount()*i,this.polyL())+this.centreY
+        }
+);
+
+      //initialise of points for right polygon
+    this.polyRight=Array(this.spokeCount()).fill({}).map((x,i)=>
+        x={
+          x:this.getx(360/this.spokeCount()*i,this.polyR())+this.centreX,
+          y:this.gety(360/this.spokeCount()*i,this.polyR())+this.centreY
+        }
+);
+
     this.svg
     .append("polygon")
-    .attr("points", "75,75 100,10 125,75 100,125")
+    //.attr("points", "75,75 100,10 125,75 100,125")
+    .attr("points", this.obj2polyPass(this.polyLeft))
     .style("fill", "none")
-    .style("stroke", "black")
-    .style("strokeWidth", 10)
+    .style("stroke", "orange")
+    .style("stroke-width", 4)
     ;
+
+    this.svg
+    .append("polygon")
+    .attr("points", this.obj2polyPass(this.polyRight))
+    .style("fill", "none")
+    .style("stroke", "blue")
+    .style("stroke-width", 4)
+    ;
+
   }
-
-
-
 
 }
 
