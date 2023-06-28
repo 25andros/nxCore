@@ -9,9 +9,10 @@ import { SubjectexampleComponent } from './subjectexample/subjectexample.compone
 import { AlfaComponent } from './subjectexample/alfa/alfa.component';
 import { BetComponent } from './subjectexample/bet/bet.component';
 import { CompinteractComponent } from './compinteract/compinteract.component';
+import { ArrayformsComponent } from './arrayforms/arrayforms.component';
 
 @NgModule({
-  declarations: [FormsComponent, DesignsComponent, RxjsComponent, SubjectexampleComponent, AlfaComponent, BetComponent, CompinteractComponent],
+  declarations: [FormsComponent, DesignsComponent, RxjsComponent, SubjectexampleComponent, AlfaComponent, BetComponent, CompinteractComponent, ArrayformsComponent],
   imports: [
     CommonModule,
   MaterialModule
