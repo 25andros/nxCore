@@ -7,26 +7,29 @@
 
   <mat-form-field >
     <mat-label># of spokes</mat-label>
-    <input matInput type=number min=3 max=20 formControlName="quantity">
+    <input matInput type=number min=3 max=20 formControlName="quantity" (click)="initObjz()">
   </mat-form-field>
   <br>
 
   <mat-form-field >
     <mat-label>Target tension</mat-label>
-    <input matInput type=number min=3 max=20 formControlName="targetTension">
+    <input matInput type=number min=3 max=140 formControlName="targetTension">
   </mat-form-field>
   <br>
 </form>
 
+{{getActualTension()}}
+{{groupInput.value|json}}
 
 <h2>Spoke Tensions</h2>
-<form style="display:inline-block; max-width:175px">
+<form [formGroup]="groupInput" style="display:inline-block; max-width:175px">
   <h3 style="color:orange">Left</h3>
 
   <div  *ngFor="let x of objLeft;index as i" >
     <mat-form-field  style="max-width:100px">
       <mat-label>Reading: {{i+1}}</mat-label>
-      <input matInput type=number [value]=getTarget()>
+      <input matInput type=number [value]=getActualTension() >
+      <!-- <input matInput type=number  [value]=getTarget()> -->
     </mat-form-field>
       <br>
   </div>
@@ -37,11 +40,13 @@
   <div  *ngFor="let x of objRight;index as i" >
     <mat-form-field  style="max-width:100px">
       <mat-label>Reading: {{i+1}}</mat-label>
-      <input matInput type=number [value]=getTarget()>
+      <input matInput type=number  >
+      <!-- <input matInput type=number [value]=getTarget()> -->
     </mat-form-field>
       <br>
   </div>
 </form>
+
 
 
 
