@@ -23,7 +23,7 @@
 
       <mat-form-field >
         <mat-label>Spoke Count (per side)</mat-label>
-        <input matInput type=number formControlName="spokeQt" min=3 max=20>
+        <input matInput type=number formControlName="spokeQt" min=3 max=20 (change)="clearForm();buildForm()">
       </mat-form-field>
       <br>
 
@@ -39,9 +39,7 @@
       </mat-form-field>
       <br>
 
-
-
-      <mat-form-field>
+      <!-- <mat-form-field>
         <mat-label>Spoke Material</mat-label>
         <select matNativeControl formControlName="spokeMat" >
           <option value=1>Steel</option>
@@ -49,16 +47,53 @@
           <option value=3>Titanium</option>
           <option value=4>Carbon Fiber</option>
         </select>
-      </mat-form-field>
-      <br>
+      </mat-form-field> -->
 
-      <mat-form-field >
+      <!-- <mat-form-field >
         <mat-label>Spoke Diameter (mm)</mat-label>
         <input matInput type=number formControlName=spokeDia step=.1 min=.8 max=2.7>
-      </mat-form-field>
+      </mat-form-field> -->
+
+      <!-- <button mat-flat-button color=accent (click)="testTab=1;clearForm();buildForm()">Change spokes</button> -->
+      <button mat-flat-button color=accent (click)="toscn()">look</button>
+
     </form>
   </mat-tab>
 
+  <mat-tab label="Spokes">
+
+    <!-- <div>{{dynamic.value|json}}</div> -->
+
+
+<form [formGroup]=dynamic >
+
+    <div formArrayName="numOfSpokes" style="display:inline-block;">
+  <h3 style="color:orange">Left</h3>
+      <div *ngFor="let x of spokeQt.controls;let i=index;" [formGroupName]="i" style="margin: 0px  5px">
+        <mat-form-field>
+          <input matInput type="number" placeholder={{i+1}}  formControlName="i" >
+          <!-- <button mat-flat-button  matSuffix color=accent type="button" (click)="rmSpoke(i)"><mat-icon>close</mat-icon></button> -->
+        </mat-form-field>
+      </div>
+    </div>
+
+
+
+    <div formArrayName="spokesRight" style="display:inline-block;">
+  <h3 style="color:blue">Right</h3>
+      <div *ngFor="let x of rSpokeQt.controls;let i=index;" [formGroupName]="i" style="margin: 0px  5px">
+        <mat-form-field>
+          <input matInput type="number" placeholder={{i+1}}  formControlName="i" >
+          <!-- <button mat-flat-button  matSuffix color=accent type="button" (click)="rmSpoke(i)"><mat-icon>close</mat-icon></button> -->
+        </mat-form-field>
+      </div>
+    </div>
+
+</form>
+
+
+
+  </mat-tab>
 
   <mat-tab label="Measure">
     <form [formGroup]="sliderSelection">
@@ -77,11 +112,6 @@
           </mat-slider>
     </form>
   </mat-tab>
-
-  <mat-tab label="Points">
-    <gibbsltd-mezpt></gibbsltd-mezpt>
-  </mat-tab>
-
 </mat-tab-group>
 
 <!-- <mat-accordion>

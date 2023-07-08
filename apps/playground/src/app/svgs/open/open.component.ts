@@ -1,5 +1,5 @@
 import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormArray, FormBuilder } from '@angular/forms';
 import * as d3 from 'd3';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -14,16 +14,17 @@ export class OpenComponent implements OnInit, OnDestroy{
   unsubscribe$ = new Subject<void>();
   panelOpenState = false;
 
-  constructor(private fb: FormBuilder,   )  {  }
+  constructor(private _fb: FormBuilder,   )  {  }
 
-  testTab=3;
+  testTab=0;
 
   //Form Builder
-  sliderSelection = this.fb.group({
+  sliderSelection = this._fb.group({
     radius:180,
     rightWheel: 155,
     leftWheel: 105,
-    spokeQt: 10,
+    spokeQt: 5,
+
     spokeMat: 1, //may change to string
     spokeDia: 2,
 
@@ -65,6 +66,7 @@ baseline$=this.sliderSelection.statusChanges
   //lifecycle hooks
 
   ngOnInit(): void {
+    this.buildForm()
     this.makeCanvas();
     this.createCirBaselines(); //backdrop circle
     this.linesMake();
@@ -216,7 +218,6 @@ x={
       return Array(alpha.length).fill({}).map((x,i)=>x=xCor[i]+","+yCor[i]).join(" ");
     }
 
-
   makepolyGon(){
 
       //console.log(this.polyLeft);
@@ -227,6 +228,7 @@ x={
           x:this.getx(360/this.spokeCount()*i,this.polyL())+this.centreX,
           y:this.gety(360/this.spokeCount()*i,this.polyL())+this.centreY
         }
+        //this.getx(degree, length)
 );
 
       //initialise of points for right polygon
@@ -255,6 +257,68 @@ x={
     ;
 
   }
+
+
+
+ // Measurement portion of application
+
+      dynamic = this._fb.group({
+        numOfSpokes:this._fb.array([ ]),
+        spokesRight:this._fb.array([ ])
+      })
+
+      //factory fx's
+
+    get spokeQt(){ return this.dynamic.get('numOfSpokes') as FormArray }
+    get rSpokeQt(){ return this.dynamic.get('spokesRight') as FormArray }
+
+    buildForm(){
+      for(let i=0;i<this.spokeCount();i++){
+        this.iterateFormSpoke()
+      }
+    }
+
+    iterateFormSpoke(){
+      this.spokeQt.push(this._fb.group({i:this.lWheel()}))
+      this.rSpokeQt.push(this._fb.group({i:this.rWheel()}))
+    }
+
+    clearForm(){
+      this.spokeQt.clear()
+      this.rSpokeQt.clear()
+    }
+
+
+    addSpoke(){ this.spokeQt.push(
+      this._fb.group({i:this.lWheel})
+    )}
+
+    rmSpoke(index:any){
+      this.spokeQt.removeAt(index)
+}
+
+toscn(){
+  // // @ts-ignore
+    //console.log(this.dynamic.value.numOfSpokes[0].i)
+
+    const  pts = []
+
+    const ray =Array(this.spokeCount()).fill({})
+   // @ts-ignore
+                  .map((x,i)=>this.dynamic.value.numOfSpokes[i].i)
+
+                  .map((x,i)=>
+                           {
+                           const degr =  360/this.spokeCount()*i
+                           return {x:Math.cos(degr)*x,y:Math.sin(degr)*x}
+                  })
+
+
+                  console.log(ray)
+
+
+}
+
 
 }
 
