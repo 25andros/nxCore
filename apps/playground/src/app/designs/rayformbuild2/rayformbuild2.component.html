@@ -1,0 +1,46 @@
+<h3>Copy build out /work2</h3>
+
+<form [formGroup]=rimInput>
+
+  <mat-form-field >
+    <mat-label># of spokes</mat-label>
+    <input matInput type=number min=3 max=20  formControlName="qt">
+  </mat-form-field>
+    <br>
+
+  <mat-form-field >
+    <mat-label>init Tension</mat-label>
+    <input matInput type=number min=100 max=140  formControlName="preSet">
+  </mat-form-field>
+    <br>
+
+</form>
+
+{{rimInput.value|json}}
+    <br>
+{{ray|json}}
+    <br>
+
+    <button mat-flat-button color=primary (click)=addSpoke()>Add spoke</button>
+    <button color="accent" mat-flat-button (click)=cngValue() >change</button>
+    <button color="warn" mat-flat-button (click)=mkeRay() >initRay</button>
+    <br>
+
+    <!-- <button mat-flat-button color=accent (click)=addSpoke2()>Add spoke2</button> -->
+
+<form [formGroup]=dynamic>
+
+    <div formArrayName="numOfSpokes">
+      <div *ngFor="let x of spokeQt.controls;let i=index;" [formGroupName]="i">
+        <mat-form-field>
+          <input matInput type="number" placeholder={{i+1}}  formControlName="i" >
+          <button mat-flat-button  matSuffix color=accent type="button" (click)="rmSpoke(i)"><mat-icon>close</mat-icon></button>
+        </mat-form-field>
+      </div>
+    </div>
+
+
+</form>
+
+{{dynamic.value|json}}
+

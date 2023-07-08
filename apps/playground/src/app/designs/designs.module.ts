@@ -10,9 +10,12 @@ import { AlfaComponent } from './subjectexample/alfa/alfa.component';
 import { BetComponent } from './subjectexample/bet/bet.component';
 import { CompinteractComponent } from './compinteract/compinteract.component';
 import { ArrayformsComponent } from './arrayforms/arrayforms.component';
+import { RayformbuildComponent } from './rayformbuild/rayformbuild.component';
+import { RestapiComponent } from './restapi/restapi.component';
+import { Rayformbuild2Component } from './rayformbuild2/rayformbuild2.component';
 
 @NgModule({
-  declarations: [FormsComponent, DesignsComponent, RxjsComponent, SubjectexampleComponent, AlfaComponent, BetComponent, CompinteractComponent, ArrayformsComponent],
+  declarations: [FormsComponent, DesignsComponent, RxjsComponent, SubjectexampleComponent, AlfaComponent, BetComponent, CompinteractComponent, ArrayformsComponent, RayformbuildComponent, RestapiComponent, Rayformbuild2Component],
   imports: [
     CommonModule,
   MaterialModule

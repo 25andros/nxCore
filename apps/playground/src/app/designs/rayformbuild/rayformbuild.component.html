@@ -1,0 +1,72 @@
+<h2>Copy build out /working</h2>
+    <button mat-flat-button color=primary (click)=addSkill()>Add spoke</button>
+
+  <button color="accent" mat-flat-button (click)=setStndTsn()>change</button>
+
+  <button color="warn" mat-flat-button (click)="toScreen()">change</button>
+<form [formGroup]="rimInfo">
+
+  <mat-form-field >
+    <mat-label># of spokes</mat-label>
+    <input matInput type=number min=3 max=20  formControlName="qt">
+  </mat-form-field>
+    <br>
+
+  <mat-form-field >
+    <mat-label>init Tension</mat-label>
+    <input matInput type=number min=100 max=140  formControlName="stndTsn">
+  </mat-form-field>
+    <br>
+
+    <!-- <mat-form-field>
+      <mat-label>Title:</mat-label>
+      <input matInput formControlName="title" />
+    <br>
+    </mat-form-field> -->
+    <div formArrayName="skills">
+      <div *ngFor="let x of talent.controls;let i=index;">
+        <mat-form-field>
+          <input matInput type="number" placeholder={{i+1}} formControlName="{{i}}" >
+          <button mat-flat-button  matSuffix color=accent type="button" (click)="rmSkill(i)"><mat-icon>close</mat-icon></button>
+        </mat-form-field>
+      </div>
+    </div>
+
+</form>
+
+
+{{ this.rimInfo.value | json }}
+
+
+
+<br>
+
+  <!-- <mat-form-field *ngFor="let x of talent.controls">
+  <input type="text" matInput  placeholder="add skill">
+  </mat-form-field> -->
+
+
+
+  <!-- <div formArrayName="addtlSpokes" *ngFor="let x of addtlSpokes.controls; let i=index" >
+  <input type="text" [formControlName]="i">
+
+  </div> -->
+
+    <!-- <div formArrayName="addtlSpokes">
+      <div  *ngFor="let x of addtlSpokes.controls; let i=index" [formGroupName]="i">
+        <mat-form-field>
+          <mat-label>Spoke #: {{i}}</mat-label>
+          <input matInput formControlName="spokeNum" />
+        </mat-form-field>
+      </div>
+    </div> -->
+
+
+  <!-- <mat-form-field appearance="fill">
+    <mat-label>Fill form field</mat-label>
+    <input matInput placeholder="Placeholder">
+    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+    <mat-hint>Hint</mat-hint>
+  </mat-form-field> -->
+
+

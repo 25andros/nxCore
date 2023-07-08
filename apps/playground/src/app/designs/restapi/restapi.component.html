@@ -1,0 +1,29 @@
+
+<form [formGroup]="itemDetails" (ngSubmit)="addDataeIn(itemDetails.value)">
+      <br>
+      <mat-form-field >
+
+        <mat-label>Item Name</mat-label>
+        <input matInput type=text formControlName="name">
+      </mat-form-field>
+      <br>
+
+      <mat-form-field >
+        <mat-label>Descript</mat-label>
+        <input matInput type=text formControlName="desc" >
+      </mat-form-field>
+      <br>
+
+      <mat-form-field >
+        <mat-label>Value of Item</mat-label>
+        <input matInput type=number formControlName="value" min=5 max=5000>
+      </mat-form-field>
+      <br>
+
+      <button color="accent" mat-flat-button type=submit>Submit </button>
+    </form>
+
+      <button color="primary" mat-flat-button (click)=grabDatae()>grab </button>
+
+      <br>
+    {{itemDetails.value |json}}

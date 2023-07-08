@@ -35,5 +35,6 @@ export class ArrayformsComponent implements OnInit {
   }
   //helpful
   //https://blog.karmacomputing.co.uk/angular-6-dynamically-add-rows-reactive-forms-how-to/
-}
+
+ }
 
