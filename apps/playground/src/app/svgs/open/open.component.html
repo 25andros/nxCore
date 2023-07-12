@@ -13,6 +13,7 @@
 
 </div> -->
 
+{{dynamic.value|json}}
 
 
 <mat-tab-group [(selectedIndex)]=testTab >
@@ -23,7 +24,9 @@
 
       <mat-form-field >
         <mat-label>Spoke Count (per side)</mat-label>
-        <input matInput type=number formControlName="spokeQt" min=3 max=20 (change)="clearForm();buildForm()">
+        <input matInput type=number formControlName="spokeQt" min=3 max=20 (change)="clearForm();buildForm();    this.genUserWheel(this.rtWheelL(),'pink');
+   this.genUserWheel(this.rtWheelR(),'purple')
+ ">
       </mat-form-field>
       <br>
 
@@ -39,64 +42,6 @@
       </mat-form-field>
       <br>
 
-      <!-- <mat-form-field>
-        <mat-label>Spoke Material</mat-label>
-        <select matNativeControl formControlName="spokeMat" >
-          <option value=1>Steel</option>
-          <option value=2>Aluminium</option>
-          <option value=3>Titanium</option>
-          <option value=4>Carbon Fiber</option>
-        </select>
-      </mat-form-field> -->
-
-      <!-- <mat-form-field >
-        <mat-label>Spoke Diameter (mm)</mat-label>
-        <input matInput type=number formControlName=spokeDia step=.1 min=.8 max=2.7>
-      </mat-form-field> -->
-
-      <!-- <button mat-flat-button color=accent (click)="testTab=1;clearForm();buildForm()">Change spokes</button> -->
-      <button mat-flat-button color=accent (click)="toscn()">look</button>
-
-    </form>
-  </mat-tab>
-
-  <mat-tab label="Spokes">
-
-    <!-- <div>{{dynamic.value|json}}</div> -->
-
-
-<form [formGroup]=dynamic >
-
-    <div formArrayName="numOfSpokes" style="display:inline-block;">
-  <h3 style="color:orange">Left</h3>
-      <div *ngFor="let x of spokeQt.controls;let i=index;" [formGroupName]="i" style="margin: 0px  5px">
-        <mat-form-field>
-          <input matInput type="number" placeholder={{i+1}}  formControlName="i" >
-          <!-- <button mat-flat-button  matSuffix color=accent type="button" (click)="rmSpoke(i)"><mat-icon>close</mat-icon></button> -->
-        </mat-form-field>
-      </div>
-    </div>
-
-
-
-    <div formArrayName="spokesRight" style="display:inline-block;">
-  <h3 style="color:blue">Right</h3>
-      <div *ngFor="let x of rSpokeQt.controls;let i=index;" [formGroupName]="i" style="margin: 0px  5px">
-        <mat-form-field>
-          <input matInput type="number" placeholder={{i+1}}  formControlName="i" >
-          <!-- <button mat-flat-button  matSuffix color=accent type="button" (click)="rmSpoke(i)"><mat-icon>close</mat-icon></button> -->
-        </mat-form-field>
-      </div>
-    </div>
-
-</form>
-
-
-
-  </mat-tab>
-
-  <mat-tab label="Measure">
-    <form [formGroup]="sliderSelection">
       <mat-slider [max]="slideMax" [min]="slideMin" [step]="step" >
         <input matSliderThumb formControlName=radius >
       </mat-slider>
@@ -110,7 +55,89 @@
           <mat-slider [min]="slideMin" [max]="slideMax">
             <input matSliderThumb formControlName=leftWheel >
           </mat-slider>
+
+      <!-- <mat-form-field>
+        <mat-label>Spoke Material</mat-label>
+        <select matNativeControl formControlName="spokeMat" >
+          <option value=1>Steel</option>
+          <option value=2>Aluminium</option>
+          <option value=3>Titanium</option>
+          <option value=4>Carbon Fiber</option>
+        </select>
+      </mat-form-field> -->
+
+      <!-- <button mat-flat-button color=accent (click)="testTab=1;clearForm();buildForm()">Change spokes</button> -->
+
+      <button mat-flat-button color=accent (click)="toscn()">look</button>
+      <button mat-flat-button color=accent (click)="genUserWheel(rtWheelL(),'pink')">look Left</button>
+      <button mat-flat-button color=accent (click)="genUserWheel(rtWheelR(),'purple')">look Right</button>
+
+      <!-- <button mat-flat-button color=warn (click)="delWheels()">look</button> -->
+
     </form>
+  </mat-tab>
+
+  <mat-tab label="Spokes">
+
+    <!-- <div>{{dynamic.value|json}}</div> -->
+
+
+<form [formGroup]=dynamic >
+
+    <div formArrayName="numOfSpokes" style="display:inline-block; ">
+  <h3 style="color:orange">Left</h3>
+      <div *ngFor="let x of spokeQt.controls;let i=index;" [formGroupName]="i" style="margin: 0px  5px">
+        <mat-form-field color=accent appearance=fill [style.width.px]=150>
+          <mat-label>spoke #{{i+1}} {{tsn2Read()}}</mat-label>
+          <input matInput type="number" placeholder={{i+1}}  formControlName="i" (change)="delWheel('pink');genUserWheel(rtWheelL(),'pink')">
+          <!-- <button mat-flat-button  matSuffix color=accent type="button" (click)="rmSpoke(i)"><mat-icon>close</mat-icon></button> -->
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div formArrayName="spokesRight" style="display:inline-block;">
+  <h3 style="color:blue">Right</h3>
+      <div *ngFor="let x of rSpokeQt.controls;let i=index;" [formGroupName]="i" style="margin: 0px  5px">
+        <mat-form-field color=primary [style.width.px]=150>
+          <mat-label>spoke #{{i+1}} </mat-label>
+          <input matInput type="number" placeholder={{i+1}}  formControlName="i" (change)="delWheel('purple');genUserWheel(rtWheelR(),'purple')" >
+          <!-- <button mat-flat-button  matSuffix color=accent type="button" (click)="rmSpoke(i)"><mat-icon>close</mat-icon></button> -->
+        </mat-form-field>
+      </div>
+    </div>
+
+</form>
+
+
+
+  </mat-tab>
+
+  <mat-tab label="Measure">
+    <form [formGroup]="sliderSelection">
+
+      <mat-form-field >
+        <mat-label>Spoke Diameter (mm)</mat-label>
+        <input matInput type=number formControlName="spokeDia" step=.1 min=.8 max=2.7>
+      </mat-form-field>
+      <br>
+
+      <mat-form-field >
+        <mat-label>immediate tension</mat-label>
+        <input matInput type=number formControlName="immed" >
+      </mat-form-field>
+      <br>
+
+      <mat-form-field >
+        <mat-label>reading</mat-label>
+        <input matInput type=number formControlName="reading" >
+      </mat-form-field>
+      <br>
+
+
+
+   </form>
+
+      <button mat-flat-button color=accent (click)="secRead2TsnFull(rtReading())">look</button>
   </mat-tab>
 </mat-tab-group>
 

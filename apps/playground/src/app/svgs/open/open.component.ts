@@ -16,17 +16,19 @@ export class OpenComponent implements OnInit, OnDestroy{
 
   constructor(private _fb: FormBuilder,   )  {  }
 
-  testTab=0;
+  testTab=2;
 
   //Form Builder
   sliderSelection = this._fb.group({
     radius:180,
     rightWheel: 155,
-    leftWheel: 105,
-    spokeQt: 5,
+    leftWheel: 105||0,
+    spokeQt: 16,
 
     spokeMat: 1, //may change to string
     spokeDia: 2,
+    reading:25,
+    immed: 25,
 
     polyL: 155,
     polyR: 175,
@@ -38,6 +40,10 @@ export class OpenComponent implements OnInit, OnDestroy{
   spokeCount(){ return this.sliderSelection.value.spokeQt||3}
   polyL(){ return this.sliderSelection.value.polyL||100}
   polyR(){ return this.sliderSelection.value.polyR||100}
+
+  spokeDia(){ return this.sliderSelection.value.spokeDia||0}
+  immed(){ return this.sliderSelection.value.immed||0}
+  rtReading(){return this.sliderSelection.value.reading||0}
 
 
 
@@ -75,7 +81,8 @@ baseline$=this.sliderSelection.statusChanges
     this.initRay();
     this.linesMake();
     this.makepolyGon();
-
+   this.genUserWheel(this.rtWheelL(),'pink')
+   this.genUserWheel(this.rtWheelR(),'purple')
   }
 
   ngOnDestroy(){
@@ -211,12 +218,12 @@ x={
   polyRight:{ x:number; y:number}[]= [
   ];
 
-    obj2polyPass(alpha:{ x:number; y:number}[]){
+  obj2polyPass(alpha:{ x:number; y:number}[]){
 
-      const xCor=alpha.map(x=>x.x);
-      const  yCor=alpha.map(x=>x.y);
-      return Array(alpha.length).fill({}).map((x,i)=>x=xCor[i]+","+yCor[i]).join(" ");
-    }
+    const xCor=alpha.map(x=>x.x);
+    const  yCor=alpha.map(x=>x.y);
+    return Array(alpha.length).fill({}).map((x,i)=>x=xCor[i]+","+yCor[i]).join(" ");
+  }
 
   makepolyGon(){
 
@@ -258,8 +265,6 @@ x={
 
   }
 
-
-
  // Measurement portion of application
 
       dynamic = this._fb.group({
@@ -268,6 +273,8 @@ x={
       })
 
       //factory fx's
+      rtWheelL(){ return this.dynamic.value.numOfSpokes||0}
+      rtWheelR(){ return this.dynamic.value.spokesRight}
 
     get spokeQt(){ return this.dynamic.get('numOfSpokes') as FormArray }
     get rSpokeQt(){ return this.dynamic.get('spokesRight') as FormArray }
@@ -279,7 +286,7 @@ x={
     }
 
     iterateFormSpoke(){
-      this.spokeQt.push(this._fb.group({i:this.lWheel()}))
+      this.spokeQt.push(this._fb.group({i:this.lWheel(),read:this.tsn2Read()}))
       this.rSpokeQt.push(this._fb.group({i:this.rWheel()}))
     }
 
@@ -288,20 +295,60 @@ x={
       this.rSpokeQt.clear()
     }
 
+    // unsued
 
     addSpoke(){ this.spokeQt.push(
-      this._fb.group({i:this.lWheel})
+      this._fb.group({i:this.lWheel,j:this.tsn2Read()})
     )}
 
     rmSpoke(index:any){
       this.spokeQt.removeAt(index)
 }
 
+  userL:{ x:number; y:number}[]= [
+  ];
+
+  userR:{ x:number; y:number}[]= [
+  ];
+
+// ------
+
+  genUserWheel(side:any,color:string){
+    const ray=Array(this.spokeCount()).fill({})
+    .map((x,i)=>side[i].i)
+    .map((x,i)=>
+         {
+           const degr =  this.degToRad(360/this.spokeCount()*i)
+           return {x:Math.cos(degr)*x+this.centreX,y:Math.sin(degr)*x+this.centreY}
+         })
+         //console.log(ray)
+         const pts =this.obj2polyPass(ray)
+
+    this.svg
+    .append("polygon")
+    //.attr("points", "75,75 100,10 125,75 100,125")
+    .attr("points", pts)
+    .style("fill", "none")
+    .style("stroke", color)
+    .style("stroke-width", 4)
+    .attr('id',color)
+    //.attr('id','genWheels#'+color)
+    ;
+    console.log
+  }
+
+  degToRad(degrees:number) {
+    return degrees * (Math.PI / 180);
+}
+
+  delWheel(color:string){
+    d3.select(`polygon#${color}`).remove()
+    //d3.selectAll('polygon#genWheels').remove()
+  }
+
 toscn(){
   // // @ts-ignore
     //console.log(this.dynamic.value.numOfSpokes[0].i)
-
-    const  pts = []
 
     const ray =Array(this.spokeCount()).fill({})
    // @ts-ignore
@@ -312,13 +359,89 @@ toscn(){
                            const degr =  360/this.spokeCount()*i
                            return {x:Math.cos(degr)*x,y:Math.sin(degr)*x}
                   })
-
-
                   console.log(ray)
+                const bro=this.obj2polyPass(ray)
 
+                console.log(bro)
+}
+
+ modelledTenEquation(){
+   //const val= this.spokeDia()*this.immed()
+
+   const x= this.spokeDia()
+   const z= this.immed()
+
+   // the followed is a modelled equation of spoke diameter to tenison
+   const a = (.000934*Math.pow(x,4)+-.00775*Math.pow(x,3)+.02379*Math.pow(x,2)+-.03174*Math.pow(x,1)+.0148)
+   const b = (-.2345*Math.pow(x,4)+1.928*Math.pow(x,3)+-5.8596*Math.pow(x,2)+7.728*Math.pow(x,1)+-3.484)
+   const c = (11.118*Math.pow(x,4)+-91.6978*Math.pow(x,3)+279.86*Math.pow(x,2)+-356.004*Math.pow(x,1)+156.045)
+
+   /*
+   console.log(a)
+   console.log(b)
+   console.log(c)
+   */
+
+   let y = a*Math.pow(z,2)+b*Math.pow(z,1)+c
+    y=Number(y.toPrecision(4))
+   //console.log(y)
+   return y
+
+
+ }
+
+ tsn2Read(){
+   //const val= this.spokeDia()*this.immed()
+
+   const x= this.spokeDia()
+   const z= this.lWheel()
+
+   // the followed is a modelled equation of spoke diameter to tenison
+   const a = (.000934*Math.pow(x,4)+-.00775*Math.pow(x,3)+.02379*Math.pow(x,2)+-.03174*Math.pow(x,1)+.0148)
+   const b = (-.2345*Math.pow(x,4)+1.928*Math.pow(x,3)+-5.8596*Math.pow(x,2)+7.728*Math.pow(x,1)+-3.484)
+   const c = (11.118*Math.pow(x,4)+-91.6978*Math.pow(x,3)+279.86*Math.pow(x,2)+-356.004*Math.pow(x,1)+156.045)
+
+   let y = a*Math.pow(z||0,2)+b*Math.pow(z||0,1)+c
+    y=Number(y.toPrecision(4))
+   return y
+
+
+ }
+
+ showVal(side:any,i:number){
+   return side[i].i
+
+ }
+
+secRead2Tsn(reading:number):number{
+   const z= reading
+   const x= this.spokeDia()
+
+   // the followed is a modelled equation of spoke diameter to tenison
+   const a = (.1469*Math.pow(x,2)+-.30095*Math.pow(x,1)+.74277)
+   const b = (-13.84062*Math.pow(x,2)+21.9736*Math.pow(x,1)+-10.8199)
+   const c = (369.5*Math.pow(x,2)+-1015.7422*Math.pow(x,1)+777.87767)
+
+   let y = a*Math.pow(z,2)+b*Math.pow(z,1)+c
+    y=Number(y.toPrecision(4))
+   return y
 
 }
 
+secRead2TsnFull(reading:number):number{
+   const z= reading
+   const x= this.spokeDia()
 
+   const a = (.8231*Math.pow(x,4)+-6.61049*Math.pow(x,3)+19.74329*Math.pow(x,2)+-25.6969*Math.pow(x,1)+12.879)
+   const b = (-52.4527*Math.pow(x,4)+415.366*Math.pow(x,3)+-1227.4839*Math.pow(x,2)+1572.1551*Math.pow(x,1)+-741.1742)
+   const c = (671.58908*Math.pow(x,4)+-5183.7605*Math.pow(x,3)+15106.849*Math.pow(x,2)+-19308.309*Math.pow(x,1)+9146.7)
+
+
+      let y = a*Math.pow(z,2)+b*Math.pow(z,1)+c
+    y=Number(y.toPrecision(4))
+    console.log(y)
+   return y
+
+}
 }
 
